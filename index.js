@@ -15,8 +15,8 @@ const bot = new Telegraf("1913645556:AAFK_KneC3NBz6S823yrZRQGdwuxe8uUDtc")
 
 bot.use(Telegraf.log())
 bot.use(session())
-bot.use(regStage.middleware())
 bot.use(crossScene.middleware())
+bot.use(regStage.middleware())
 
 ///
 bot.start(async(ctx) => {
@@ -31,9 +31,10 @@ bot.start(async(ctx) => {
                     .resize()
         )
     } else{
-        ctx.reply('Вас я не знаю')
+        await ctx.reply('Вас я не знаю');
+        await ctx.scene.enter('name');
+
     }
-    // ctx.scene.enter('name')
     // ctx.reply('Welcome')
 }) 
 
