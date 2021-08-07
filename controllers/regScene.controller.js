@@ -41,7 +41,13 @@ class RegisterScenes{
         sex.enter(async(ctx) =>  {
             await ctx.reply(
                 'Ваш пол',
-                Markup.keyboard(['Мужчина', 'Женщина']).resize()
+                Markup.keyboard(
+                    ['Мужчина', 'Женщина'],
+                    {
+                        wrap: (btn, index, currentRow) => currentRow.length>=5
+                    }
+                )
+                .resize()
                 )
             })
         sex.on('text', async(ctx)=>{
@@ -80,12 +86,37 @@ class RegisterScenes{
             ctx.session.location = ctx.update.message.text;
             console.log(ctx.update.message.text)
              
-              await ctx.scene.enter('description');
+              await ctx.scene.enter('preference');
               // await ctx.scene.leave()
               
          })
          
       return place;
+    }
+    preferencesScene(){
+        const preference = new Scenes.BaseScene('preference');
+        preference.enter(async (ctx) => {
+            await ctx.reply('Кто тебе нравиться?',
+                    Markup.keyboard(
+                        ['Парни', 'Девушки'],
+                        {
+                            wrap: (btn, index, currentRow) => currentRow.length>=5
+                        }
+                    ).resize()
+            )
+        })
+        preference.on('text', async (ctx)=>{
+            const prefer = ctx.update.message.text;
+            if(prefer=='Парни' || prefer=='Девушки'){
+                ctx.session.prefer = prefer;
+                await ctx.scene.enter('description');
+            }
+            else {
+                ctx.reply();
+                ctx.scene.reenter();
+            } 
+        })
+        return preference;
     }
     descriptionScene(){
         const description = new Scenes.BaseScene('description');
@@ -102,18 +133,20 @@ class RegisterScenes{
             const username = ctx.update.message.from.username;
             const location = ctx.session.location;
             const age = ctx.session.age;
+            const sex = ctx.session.sex;
+            const preference = ctx.session.prefer;
             const possible_user = await db.query('SELECT * FROM usertable WHERE tele_id=$1', [tele_id])
             if(possible_user.rows.length){
                 if(user_description == 'Пропустить'){
-                    await db.query('UPDATE  usertable SET  first_name=$1, user_age=$2, user_location=$3, user_description=$4, username=$5  WHERE tele_id=$6', [first_name, age, location, user_description, username, tele_id])
+                    await db.query('UPDATE  usertable SET  first_name=$1, user_age=$2, user_location=$3, user_description=$4, username=$5, sex=$6, preferences=$7  WHERE tele_id=$8', [first_name, age, location, user_description, username, sex, preference, tele_id])
                 } else{
-                    await db.query('UPDATE  usertable SET  first_name=$1, user_age=$2, user_location=$3, user_description=$4, username=$5  WHERE tele_id=$6', [first_name, age, location, user_description, username, tele_id])
+                    await db.query('UPDATE  usertable SET  first_name=$1, user_age=$2, user_location=$3, user_description=$4, username=$5, sex=$6, preferences=$7  WHERE tele_id=$8', [first_name, age, location, user_description, username, sex, preference, tele_id])
                 }
             }else{
                 if(user_description == 'Пропустить'){
-                    await db.query('INSERT INTO usertable (tele_id, first_name, user_age, user_location, user_description, username)  values ($1,$2, $3, $4, $5, $6)', [tele_id, first_name, age, location, user_description, username])
+                    await db.query('INSERT INTO usertable (tele_id, first_name, user_age, user_location, user_description, username, sex, preferences)  values ($1,$2, $3, $4, $5, $6, $7, $8)', [tele_id, first_name, age, location, user_description, username, sex, preference])
                 } else{
-                    await db.query('INSERT INTO usertable (tele_id, first_name, user_age, user_location, user_description, username)  values ($1,$2, $3, $4, $5, $6)', [tele_id, first_name, age, location, user_description, username])
+                    await db.query('INSERT INTO usertable (tele_id, first_name, user_age, user_location, user_description, username, sex, preferences)  values ($1,$2, $3, $4, $5, $6, $7, $8)', [tele_id, first_name, age, location, user_description, username, sex, preference])
                 }
             }
             await ctx.scene.enter('crossroad');

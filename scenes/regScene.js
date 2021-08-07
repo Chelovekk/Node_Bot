@@ -10,7 +10,7 @@ const ageScene = regScenes.ageScene();
 const placeScene = regScenes.placeScene();
 const sexScene = regScenes.sexScene();
 const descriptionScene = regScenes.descriptionScene();
-
+const preferenceScene = regScenes.preferencesScene();
 
 const crossScenes  = new crossRoad();
 const crossScene = crossScenes.crossScene();
@@ -18,7 +18,7 @@ const crossScene = crossScenes.crossScene();
 
 
 
-const stage = new Scenes.Stage([nameScene, ageScene, placeScene, sexScene, descriptionScene, crossScene])
+const stage = new Scenes.Stage([nameScene, ageScene, placeScene, sexScene, descriptionScene, crossScene, preferenceScene])
 
 
 module.exports = stage;

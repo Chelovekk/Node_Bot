@@ -6,32 +6,17 @@ create TABLE usertable(
     user_age INTEGER,
     username VARCHAR,
     user_location VARCHAR,
-    user_description VARCHAR
+    user_description VARCHAR,
+    sex VARCHAR,
+    preferences VARCHAR
 );
 
-
-create TABLE achievement(
-    id SERIAL PRIMARY KEY,
-    name VARCHAR(255)
-);
-create TABLE achievementgoals(
-    goal INTEGER,
-    ach_id INTEGER,
-    FOREIGN KEY (ach_id) 
-    REFERENCES achievement (id)
+create TABLE user_candidates(
+    another_user_id INTEGER,
+    checked BOOLEAN DEFAULT false, 
+    tele_id INTEGER,
+    FOREIGN KEY (tele_id)
+    REFERENCES usertable (tele_id)
     ON DELETE CASCADE
 );
 
-
-create TABLE user_achievement_progress(
-    completed BOOLEAN DEFAULT false,
-    progress INTEGER,
-    user_id INTEGER,
-    FOREIGN KEY (user_id) 
-    REFERENCES usertable (id)
-    ON DELETE CASCADE,
-    ach_id INTEGER,
-    FOREIGN KEY (ach_id) 
-    REFERENCES achievement (id)  
-    ON DELETE CASCADE
-);
