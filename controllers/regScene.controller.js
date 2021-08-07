@@ -94,6 +94,7 @@ class RegisterScenes{
             ctx.reply('Опиши себя',
                       Markup.keyboard(['Пропустить']).resize()
             )
+        })    
             description.on('text', async(ctx)=>{
             const user_description = ctx.update.message.text;
             const first_name = ctx.session.name;
@@ -101,19 +102,23 @@ class RegisterScenes{
             const username = ctx.update.message.from.username;
             const location = ctx.session.location;
             const age = ctx.session.age;
-            if(user_description == 'Пропустить'){
-                await ctx.reply(`  ${ctx.session.name}, ${ctx.session.age},Город ${ctx.session.city}`,
-                 Markup.keyboard(['❤️', '❌', '🚫'])
-                 )   
-                await db.query('INSERT INTO usertable (tele_id, first_name, user_age, user_location, user_description, username)  values ($1,$2, $3, $4, $5, $6)', [tele_id, first_name, age, location, user_description, username])
-
-                await ctx.scene.leave()
-            } else{
-                await ctx.reply(` Имя ${ctx.session.name} \n Возраст ${ctx.session.age} \n Пол ${ctx.session.sex} \n Город ${ctx.session.city} \n ${user_description}`,Markup.removeKeyboard())  
-                await db.query('INSERT INTO usertable (tele_id, first_name, user_age, user_location, user_description, username)  values ($1,$2, $3, $4, $5, $6)', [tele_id, first_name, age, location, user_description, username])
-                await ctx.scene.enter('crossroad')
+            const possible_user = await db.query('SELECT * FROM usertable WHERE tele_id=$1', [tele_id])
+            if(possible_user.rows.length){
+                if(user_description == 'Пропустить'){
+                    await db.query('UPDATE  usertable SET  first_name=$1, user_age=$2, user_location=$3, user_description=$4, username=$5  WHERE tele_id=$6', [first_name, age, location, user_description, username, tele_id])
+                } else{
+                    await db.query('UPDATE  usertable SET  first_name=$1, user_age=$2, user_location=$3, user_description=$4, username=$5  WHERE tele_id=$6', [first_name, age, location, user_description, username, tele_id])
+                }
+            }else{
+                if(user_description == 'Пропустить'){
+                    await db.query('INSERT INTO usertable (tele_id, first_name, user_age, user_location, user_description, username)  values ($1,$2, $3, $4, $5, $6)', [tele_id, first_name, age, location, user_description, username])
+                } else{
+                    await db.query('INSERT INTO usertable (tele_id, first_name, user_age, user_location, user_description, username)  values ($1,$2, $3, $4, $5, $6)', [tele_id, first_name, age, location, user_description, username])
+                }
             }
-        })
+            await ctx.scene.enter('crossroad');
+
+            
         })
         return description;
     }

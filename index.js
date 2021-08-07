@@ -15,21 +15,14 @@ const bot = new Telegraf("1913645556:AAFK_KneC3NBz6S823yrZRQGdwuxe8uUDtc")
 
 bot.use(Telegraf.log())
 bot.use(session())
-bot.use(crossScene.middleware())
 bot.use(regStage.middleware())
-
 ///
 bot.start(async(ctx) => {
     tele_id = ctx.update.message.from.id;
     const user = await db.query('SELECT first_name FROM usertable WHERE tele_id=$1',[tele_id])
     if(user.rows.length){
-        ctx.reply(`Привет ${user.rows[0].first_name}`,
-                    Markup.keyboard(
-                        ['❤️', '❌ Пропустить', '🚫 Стоп'],
-                        {wrap: (btn, index, currentRow) => currentRow.length>=5}
-                    )
-                    .resize()
-        )
+        await ctx.reply(`Привет ${user.rows[0].first_name}`);
+        await ctx.scene.enter('crossroad');
     } else{
         await ctx.reply('Вас я не знаю');
         await ctx.scene.enter('name');
