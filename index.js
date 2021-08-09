@@ -13,7 +13,7 @@ const bot = new Telegraf("1913645556:AAFK_KneC3NBz6S823yrZRQGdwuxe8uUDtc")
 
 // const { enter, leave } = Scenes.Stage
 
-bot.use(Telegraf.log())
+// bot.use(Telegraf.log())
 bot.use(session())
 bot.use(regStage.middleware())
 ///
