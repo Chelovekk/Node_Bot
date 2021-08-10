@@ -17,7 +17,7 @@ class crossRoad{
                         )
         })
         cross.on('text', async(ctx)=>{
-            
+            try {
                 if(ctx.update.message.text == 'Начfть поиск(🤡)'){
                     const user_id = ctx.update.message.from.id;
                     const user_prefer = await db.query('SELECT preferences FROM usertable WHERE tele_id=$1',[user_id]);
@@ -42,6 +42,10 @@ class crossRoad{
                 } else if(ctx.update.message.text =='Остановить поиск(🤡)'){
                     ctx.scene.reenter();
                 } 
+            } catch (error) {
+                
+            }
+               
         })
         return cross
     }

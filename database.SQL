@@ -22,4 +22,13 @@ create TABLE user_candidates(
     REFERENCES usertable (tele_id)
     ON DELETE CASCADE
 );
-
+create TABLE user_liked(
+    another_user_id INTEGER UNIQUE,
+    tele_id INTEGER,
+    FOREIGN KEY (tele_id)
+    REFERENCES usertable (tele_id)
+    ON DELETE CASCADE,
+    FOREIGN KEY (another_user_id)
+    REFERENCES usertable (tele_id)
+    ON DELETE CASCADE
+)
