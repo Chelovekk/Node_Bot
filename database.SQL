@@ -12,9 +12,10 @@ create TABLE usertable(
 );
 
 create TABLE user_candidates(
-    another_user_id INTEGER UNIQUE,
+    another_user_id INTEGER,
     checked BOOLEAN DEFAULT false, 
     tele_id INTEGER,
+    UNIQUE(another_user_id, tele_id),
     FOREIGN KEY (tele_id)
     REFERENCES usertable (tele_id)
     ON DELETE CASCADE,
@@ -23,8 +24,9 @@ create TABLE user_candidates(
     ON DELETE CASCADE
 );
 create TABLE user_liked(
-    another_user_id INTEGER UNIQUE,
+    another_user_id INTEGER,
     tele_id INTEGER,
+    UNIQUE(another_user_id, tele_id),
     FOREIGN KEY (tele_id)
     REFERENCES usertable (tele_id)
     ON DELETE CASCADE,

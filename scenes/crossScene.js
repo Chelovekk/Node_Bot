@@ -1,6 +1,6 @@
 const { Scenes } = require('telegraf') 
 
-const crossRoad = require('../controllers/crossroad.controller')
+const crossRoad = require('../scene_controllers/crossroad.controller')
 
 
 const scenes  = new crossRoad();

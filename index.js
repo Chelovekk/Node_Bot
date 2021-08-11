@@ -1,8 +1,8 @@
 const express = require('express');
 const app = express();
-const {session, Telegraf, Markup } = require('telegraf') 
+const {session, Telegraf, Telegram } = require('telegraf') 
+
 const regStage = require('./scenes/regScene')
-const crossScene = require('./scenes/crossScene')
 const db = require('./db')
 // const geoRev = require('geo-reverse')
 
@@ -39,7 +39,7 @@ bot.help((ctx) => {
     console.log(ctx)
     ctx.reply(ctx.botInfo)
 }) 
-bot.on('sticker', (ctx) => ctx.reply('?')) 
+bot.on('sticker', (ctx) =>tgram.sendMessage(1932844604,'HUI')) 
 bot.hears('hi', (ctx) => {
     console.log(ctx.update.message)
     ctx.reply('Hey there')

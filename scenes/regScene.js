@@ -1,8 +1,8 @@
 const { Scenes } = require('telegraf') 
 
-const RegisterScenes = require('../controllers/regScene.controller')
-const crossRoad = require('../controllers/crossroad.controller')
-const searchScenes = require('../controllers/search.controller')
+const RegisterScenes = require('../scene_controllers/regScene.controller')
+const crossRoad = require('../scene_controllers/crossroad.controller')
+const searchScenes = require('../scene_controllers/search.controller')
 
 const regScenes  = new RegisterScenes();
 const nameScene = regScenes.nameScene();

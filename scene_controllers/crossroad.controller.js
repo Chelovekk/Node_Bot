@@ -25,14 +25,15 @@ class crossRoad{
                     
                     if(user_prefer.rows[0].preferences == 'Парни' ){
                         let candidates = await db.query('SELECT tele_id FROM usertable WHERE sex=$1',['Мужчина']);
+                        candidates.rows.sort(() => Math.random() - 0.5);
                         candidates.rows.forEach(async candidate=>{
-                            await db.query('INSERT INTO user_candidates (tele_id, another_user_id) values ($1,$2)',[user_id, candidate.tele_id])
+                            await db.query('INSERT INTO user_candidates (tele_id, another_user_id) values ($1,$2) ON CONFLICT DO NOTHING',[user_id, candidate.tele_id])
                         })
                     }else {
                         let candidates = await db.query('SELECT tele_id FROM usertable WHERE sex=$1',['Женщина']);
+                      candidates.rows.sort(() => Math.random() - 0.5);
                         candidates.rows.forEach(async candidate=>{
-                            console.log(candidate)
-                            await db.query('INSERT INTO user_candidates (tele_id, another_user_id) values ($1,$2)',[user_id, candidate.tele_id])
+                            await db.query('INSERT INTO user_candidates (tele_id, another_user_id) values ($1,$2) ON CONFLICT DO NOTHING',[user_id, candidate.tele_id])
                         })
                     }
                     ctx.scene.enter('search');
@@ -42,8 +43,8 @@ class crossRoad{
                 } else if(ctx.update.message.text =='Остановить поиск(🤡)'){
                     ctx.scene.reenter();
                 } 
-            } catch (error) {
-                
+            } catch (err) {
+                console.log(err)
             }
                
         })
