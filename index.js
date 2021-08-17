@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-const {session, Telegraf, Telegram } = require('telegraf') 
+const {session, Telegraf, Markup , Telegram} = require('telegraf') 
 
 const regStage = require('./scenes/regScene')
 const db = require('./db')
@@ -9,11 +9,12 @@ const db = require('./db')
 
 
 const bot = new Telegraf("1913645556:AAFK_KneC3NBz6S823yrZRQGdwuxe8uUDtc") 
+const tgram = new Telegram('1913645556:AAFK_KneC3NBz6S823yrZRQGdwuxe8uUDtc')
 
 
 // const { enter, leave } = Scenes.Stage
 
-// bot.use(Telegraf.log())
+bot.use(Telegraf.log())
 bot.use(session())
 bot.use(regStage.middleware())
 ///
@@ -39,9 +40,19 @@ bot.help((ctx) => {
     console.log(ctx)
     ctx.reply(ctx.botInfo)
 }) 
-bot.on('sticker', (ctx) =>tgram.sendMessage(1932844604,'HUI')) 
-bot.hears('hi', (ctx) => {
-    console.log(ctx.update.message)
+ 
+bot.on('text', async ctx=>{
+     if(ctx.update.message.text == 'Посмотреть'){
+        ctx.scene.enter('liked');
+
+    } else if(ctx.update.message.text == 'Пропустить'){
+        ctx.scene.enter('crossroad');
+    }
+})
+
+bot.hears('hi', async (ctx) => {
+    let a = await db.query('select * from usertable')
+    console.log(a)
     ctx.reply('Hey there')
 })
 

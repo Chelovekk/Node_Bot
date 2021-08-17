@@ -42,12 +42,18 @@ class crossRoad{
                     ctx.scene.enter('name');
                 } else if(ctx.update.message.text =='Остановить поиск(🤡)'){
                     ctx.scene.reenter();
-                } 
+                } else if(ctx.update.message.text == 'Посмотреть'){
+                    ctx.scene.enter('liked');
+
+                } else if(ctx.update.message.text == 'Пропустить'){
+                    ctx.scene.reenter();
+                }
             } catch (err) {
                 console.log(err)
             }
                
         })
+       
         return cross
     }
     

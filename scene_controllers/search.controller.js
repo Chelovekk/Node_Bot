@@ -49,7 +49,6 @@ class Search{
             } catch (error) {
                 
             }
-            
         })
         search.on('text', async ctx => {
             try {
@@ -65,11 +64,31 @@ class Search{
                     const user_location = replyData.rows[0].user_location;
                     const user_description = replyData.rows[0].user_description;
                     console.log(liked_user)
-                    if(liked)
+                    // if(liked)
                     // tgram.sendMessage(liked_user,`${first_name}, ${user_age}, ${user_location}\n${user_description}\n ${sex}`)
-                    tgram.sendMessage(liked_user,Markup(
-                                        ['check'].resize()
-                    ))
+                    // tgram.sendMessage(liked_user,Markup(
+                    //                     ['check'].resize()
+                    // ))
+                    tgram.sendMessage(
+                        liked_user, 
+                        'Вы понравились кому-то',
+                        {
+                            "reply_markup": {
+                                        "keyboard": [[
+                                            {
+                                                "text": "Посмотреть"
+                                            }, 
+                                            {
+                                                "text": "Пропустить"
+                                            }]
+                                        ],
+                                        "resize_keyboard" : true
+
+
+                                    }
+
+                            }
+                        )
 
                     ctx.scene.reenter();
                 }else if(ctx.update.message.text == 'Дальше'){
@@ -78,12 +97,20 @@ class Search{
 
                 }else if(ctx.update.message.text == 'Стоп'){
                     ctx.scene.enter('crossroad')
+                } else if(ctx.update.message.text == 'Посмотреть'){
+                    ctx.scene.enter('liked');
+
+                } else if(ctx.update.message.text == 'Пропустить'){
+                    ctx.scene.reenter();
                 }
             } catch (err) {
                 console.log(err)
             }
             
         })
+        // search.on('callback_query', async (ctx)=>{
+        //     if(ctx.update.data==5)
+        // })
 
         return search;
     }

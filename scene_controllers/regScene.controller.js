@@ -127,7 +127,12 @@ class RegisterScenes{
             )
         })    
             description.on('text', async(ctx)=>{
-            const user_description = ctx.update.message.text;
+                if(ctx.update.message.text == 'Пропустить'){
+                    ctx.session.description = " "; 
+                }else {
+                    ctx.session.description = ctx.update.message.text;
+                }
+            const user_description = ctx.session.description;
             const first_name = ctx.session.name;
             const tele_id = ctx.update.message.from.id;
             const username = ctx.update.message.from.username;
