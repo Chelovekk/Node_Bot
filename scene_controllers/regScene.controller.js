@@ -7,13 +7,17 @@ class RegisterScenes{
       const username = new Scenes.BaseScene('name')
       username.enter(async(ctx) => await ctx.reply('Введите ваше имя'))
       username.on('text', async(ctx) => {
-        if(ctx.update.message.text){
-            await ctx.scene.enter('age')
-            ctx.session.name = ctx.update.message.text
-            // await ctx.scene.leave()
-        } else{
-            await ctx.reply('Повтори')
-            await ctx.scene.reenter()
+        try {
+            if(ctx.update.message.text){
+                await ctx.scene.enter('age')
+                ctx.session.name = ctx.update.message.text
+                // await ctx.scene.leave()
+            } else{
+                await ctx.reply('Повтори')
+                await ctx.scene.reenter()
+            }
+        } catch (error) {
+            
         }
        })
     username.on('message', (ctx) => ctx.reply('Это не имя'))
@@ -24,7 +28,8 @@ class RegisterScenes{
         const age = new Scenes.BaseScene('age')
         age.enter(async(ctx) => await ctx.reply('Введите свой возраст'))
         age.on('text', async(ctx) => {
-            const userAge = Number(ctx.update.message.text)
+            try {
+                const userAge = Number(ctx.update.message.text)
             if(userAge && userAge>0){
                 ctx.session.age = userAge;
                 // await ctx.enter('age')
@@ -33,25 +38,33 @@ class RegisterScenes{
                 await ctx.reply('Не похоже на возраст')
                 await ctx.scene.reenter()
             }
+            } catch (error) {
+                
+            }
            })
            return age
     }
     sexScene(){
         const sex = new Scenes.BaseScene('sex')
         sex.enter(async(ctx) =>  {
-            await ctx.reply(
-                'Ваш пол',
-                Markup.keyboard(
-                    ['Мужчина', 'Женщина'],
-                    {
-                        wrap: (btn, index, currentRow) => currentRow.length>=5
-                    }
-                )
-                .resize()
-                )
+            try {
+                await ctx.reply(
+                    'Ваш пол',
+                    Markup.keyboard(
+                        ['Мужчина', 'Женщина'],
+                        {
+                            wrap: (btn, index, currentRow) => currentRow.length>=5
+                        }
+                    )
+                    .resize()
+                    )
+            } catch (error) {
+                
+            }
             })
         sex.on('text', async(ctx)=>{
-            const sex = ctx.update.message.text;
+            try {
+                const sex = ctx.update.message.text;
             if(sex=='Мужчина' || sex=='Женщина'){
                 ctx.session.sex = sex;
                 await ctx.scene.enter('place');
@@ -59,6 +72,9 @@ class RegisterScenes{
             else {
                 ctx.reply();
                 ctx.scene.reenter();
+            }
+            } catch (error) {
+                
             }             
     })
     return sex
@@ -73,11 +89,11 @@ class RegisterScenes{
                                   [['Винница', 'Днепр', 'Донецк'],
                                    ['Запорожье', 'Львов', 'Кривой Рог'],
                                    ['Севастополь', 'Николаев', 'Мариуполь'],
-                                   ['Киев	', 'Житомир	', 'Ивано-Франковск	'],
-                                   ['Кропивницкий	', 'Луганск	', 'Луцк	'],
-                                   ['Николаев	', 'Одесса	', 'Ровно	'],
-                                   ['Николаев	', 'Одесса	', 'Ровно	'],
-                                   ['Николаев	', 'Одесса	', 'Ровно	']]
+                                   ['Киев', 'Житомир', 'Ивано-Франковск	'],
+                                   ['Кропивницкий', 'Луганск', 'Луцк'],
+                                   ['Херсон	', 'Чернигов', 'Полтава	'],
+                                   ['Черкассы', 'Хмельницкий', 'Черновцы'],
+                                   ['Сумы', 'Севастополь', 'Ровно']]
             
                                 ).resize()
               )

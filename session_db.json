@@ -1,0 +1,61 @@
+{
+  "sessions": [
+    {
+      "id": "1932844604:1932844604",
+      "data": {
+        "__scenes": {
+          "current": "search",
+          "state": {}
+        },
+        "candidate": [
+          {
+            "another_user_id": 368161810,
+            "checked": false,
+            "tele_id": 1932844604
+          }
+        ],
+        "another_user_name": "markurio"
+      }
+    },
+    {
+      "id": "368161810:368161810",
+      "data": {
+        "__scenes": {
+          "current": "search",
+          "state": {}
+        },
+        "candidate": [
+          {
+            "another_user_id": 1932844604,
+            "checked": false,
+            "tele_id": 368161810
+          }
+        ],
+        "another_user_name": null,
+        "name": "Остановить поиск(🤡)",
+        "age": 12,
+        "sex": "Мужчина",
+        "location": "Винница",
+        "prefer": "Девушки",
+        "description": " "
+      }
+    },
+    {
+      "id": "516254942:516254942",
+      "data": {
+        "__scenes": {
+          "current": "search",
+          "state": {}
+        },
+        "candidate": [
+          {
+            "another_user_id": 356357455,
+            "checked": false,
+            "tele_id": 516254942
+          }
+        ],
+        "another_user_name": null
+      }
+    }
+  ]
+}

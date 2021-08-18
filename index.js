@@ -1,8 +1,9 @@
 const express = require('express');
 const app = express();
 const {session, Telegraf, Markup , Telegram} = require('telegraf') 
+const LocalSession = require('telegraf-session-local')
 
-const regStage = require('./scenes/regScene')
+const stage = require('./scenes/scenes')
 const db = require('./db')
 // const geoRev = require('geo-reverse')
 
@@ -15,8 +16,8 @@ const tgram = new Telegram('1913645556:AAFK_KneC3NBz6S823yrZRQGdwuxe8uUDtc')
 // const { enter, leave } = Scenes.Stage
 
 bot.use(Telegraf.log())
-bot.use(session())
-bot.use(regStage.middleware())
+bot.use((new LocalSession({ database: './session_db.json' })).middleware())
+bot.use(stage.middleware())
 ///
 bot.start(async(ctx) => {
     tele_id = ctx.update.message.from.id;

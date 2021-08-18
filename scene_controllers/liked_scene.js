@@ -7,7 +7,8 @@ class LikedScene{
     showLikes(){
         const liked = new Scenes.BaseScene('liked');
         liked.enter(async ctx=>{
-            const user_id = ctx.update.message.from.id;
+            try {
+                const user_id = ctx.update.message.from.id;
             const candidate = await db.query('SELECT  * FROM user_liked WHERE tele_id=$1 FETCH FIRST 1 ROWS ONLY ', [user_id]);
             ctx.session.candidate = candidate.rows;
                 if(ctx.session.candidate.length){
@@ -19,7 +20,7 @@ class LikedScene{
                     const user_description = replyData.rows[0].user_description;
                     ctx.session.another_user_name = replyData.rows[0].username;
                     await ctx.reply(`${first_name}, ${user_age}, ${user_location}\n${user_description}\n ${sex}`, 
-                                    Markup.keyboard(['Оценить','Дальше', 'Вернуться'],{
+                                    Markup.keyboard(['Взаимно','Дальше', 'Вернуться'],{
                                         wrap: (btn, index, currentRow) => currentRow.length>=5
                                     }).resize()   
                         );
@@ -33,27 +34,36 @@ class LikedScene{
                     .resize()   
                     )
                 }
+            } catch (error) {
+                
+            }
                     
             })
         liked.on('text', async ctx => {
-            
-            if(ctx.update.message.text == 'Взаимно'){
-                await db.query('DELETE FROM user_liked WHERE another_user_id=$1 AND tele_id=$2',[ctx.session.candidate[0].another_user_id, ctx.update.message.from.id])
-                await tgram.sendMessage(
-                    ctx.session.candidate[0].another_user_id, 
-                    `@${ctx.session.another_user_name} Ответил взаимностю` 
-                    )
+            try {
+                if(ctx.update.message.text == 'Взаимно'){
+                    await db.query('DELETE FROM user_liked WHERE another_user_id=$1 AND tele_id=$2',[ctx.session.candidate[0].another_user_id, ctx.update.message.from.id])
+                    const username =  ctx.update.message.from.username
+                    console.log(username)
+                    await tgram.sendMessage(
+                        ctx.session.candidate[0].another_user_id, 
+                        `@${username} Ответил взаимностю` 
+                        )
+                        ctx.scene.reenter();
+                }else if(ctx.update.message.text == 'Дальше'){
+                    await db.query('DELETE FROM user_liked WHERE another_user_id=$1 AND tele_id=$2',[ctx.session.candidate[0].another_user_id, ctx.update.message.from.id])
                     ctx.scene.reenter();
-            }else if(ctx.update.message.text == 'Дальше'){
-                await db.query('DELETE FROM user_liked WHERE another_user_id=$1 AND tele_id=$2',[ctx.session.candidate[0].another_user_id, ctx.update.message.from.id])
-                ctx.scene.reenter();
-            }else if(ctx.update.message.text == 'Вернуться'){
-                ctx.scene.enter('crossroad')
-            } else if(ctx.update.message.text = 'Пропустить'){
-                ctx.scene.enter('crossroad')
-            }else if(ctx.update.message.text = 'Посмотреть'){
-                ctx.scene.reenter();
+                }else if(ctx.update.message.text == 'Вернуться'){
+                    ctx.scene.enter('crossroad')
+                } else if(ctx.update.message.text == 'Пропустить'){
+                    ctx.scene.enter('crossroad')
+                }else if(ctx.update.message.text == 'Посмотреть'){
+                    ctx.scene.reenter();
+                }
+            } catch (error) {
+                
             }
+            
 
             
         })

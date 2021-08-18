@@ -57,18 +57,7 @@ class Search{
                 if(ctx.update.message.text == 'Оценить'){
                     await db.query('INSERT INTO user_liked (tele_id, another_user_id) values ($1,$2) ON CONFLICT DO NOTHING',[liked_user, user_id])
                     await db.query('DELETE FROM user_candidates WHERE another_user_id=$1 AND tele_id=$2',[ctx.session.candidate[0].another_user_id, user_id])
-                    const replyData = await db.query('SELECT sex, user_age, first_name, user_location, user_description FROM usertable WHERE tele_id=$1',[user_id]);
-                    const sex = replyData.rows[0].sex;
-                    const user_age = replyData.rows[0].user_age;
-                    const first_name = replyData.rows[0].first_name;
-                    const user_location = replyData.rows[0].user_location;
-                    const user_description = replyData.rows[0].user_description;
-                    console.log(liked_user)
-                    // if(liked)
-                    // tgram.sendMessage(liked_user,`${first_name}, ${user_age}, ${user_location}\n${user_description}\n ${sex}`)
-                    // tgram.sendMessage(liked_user,Markup(
-                    //                     ['check'].resize()
-                    // ))
+                    
                     tgram.sendMessage(
                         liked_user, 
                         'Вы понравились кому-то',
