@@ -43,13 +43,12 @@ class LikedScene{
             try {
                 if(ctx.update.message.text == 'Взаимно'){
                     await db.query('DELETE FROM user_liked WHERE another_user_id=$1 AND tele_id=$2',[ctx.session.candidate[0].another_user_id, ctx.update.message.from.id])
-                    const username =  ctx.update.message.from.username
-                    console.log(username)
                     await tgram.sendMessage(
                         ctx.session.candidate[0].another_user_id, 
-                        `@${username} Ответил взаимностю` 
+                        `<a href="tg://user?id=${ctx.update.message.from.id}">inline mention of a user</a> ответил взаимностью`,
+                        { 'parse_mode': 'html' }
                         )
-                        ctx.scene.reenter();
+                    ctx.scene.reenter();
                 }else if(ctx.update.message.text == 'Дальше'){
                     await db.query('DELETE FROM user_liked WHERE another_user_id=$1 AND tele_id=$2',[ctx.session.candidate[0].another_user_id, ctx.update.message.from.id])
                     ctx.scene.reenter();
@@ -61,7 +60,7 @@ class LikedScene{
                     ctx.scene.reenter();
                 }
             } catch (error) {
-                
+                console.log(error)
             }
             
 

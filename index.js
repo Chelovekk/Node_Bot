@@ -15,7 +15,7 @@ const tgram = new Telegram('1913645556:AAFK_KneC3NBz6S823yrZRQGdwuxe8uUDtc')
 
 // const { enter, leave } = Scenes.Stage
 
-bot.use(Telegraf.log())
+// bot.use(Telegraf.log())
 bot.use((new LocalSession({ database: './session_db.json' })).middleware())
 bot.use(stage.middleware())
 ///
@@ -48,13 +48,20 @@ bot.on('text', async ctx=>{
 
     } else if(ctx.update.message.text == 'Пропустить'){
         ctx.scene.enter('crossroad');
+    } else{
+        console.log('hi')
+        await tgram.sendMessage(
+            368161810, 
+            '<a href="tg://user?id=368161810">inline mention of a user</a>',
+             {
+                 "parse_mode" : "HTML"
+                }
+            )
     }
 })
 
 bot.hears('hi', async (ctx) => {
-    let a = await db.query('select * from usertable')
-    console.log(a)
-    ctx.reply('Hey there')
+   
 })
 
 
