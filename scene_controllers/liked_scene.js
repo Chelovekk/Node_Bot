@@ -45,7 +45,7 @@ class LikedScene{
                     await db.query('DELETE FROM user_liked WHERE another_user_id=$1 AND tele_id=$2',[ctx.session.candidate[0].another_user_id, ctx.update.message.from.id])
                     await tgram.sendMessage(
                         ctx.session.candidate[0].another_user_id, 
-                        `<a href="tg://user?id=${ctx.update.message.from.id}">inline mention of a user</a> ответил взаимностью`,
+                        `<a href="tg://user?id=${ctx.update.message.from.id}">${ctx.update.message.from.first_name}</a> ответил взаимностью`,
                         { 'parse_mode': 'html' }
                         )
                     ctx.scene.reenter();

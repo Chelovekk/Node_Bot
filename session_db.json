@@ -4,13 +4,12 @@
       "id": "368161810:368161810",
       "data": {
         "__scenes": {
-          "current": "search",
+          "current": "liked",
           "state": {}
         },
         "candidate": [
           {
-            "another_user_id": 356357455,
-            "checked": false,
+            "another_user_id": 1932844604,
             "tele_id": 368161810
           }
         ],
@@ -20,19 +19,31 @@
     {
       "id": "516254942:516254942",
       "data": {
-        "__scenes": {}
+        "__scenes": {
+          "current": "search",
+          "state": {}
+        },
+        "candidate": [
+          {
+            "another_user_id": 1932844604,
+            "checked": false,
+            "tele_id": 516254942
+          }
+        ],
+        "another_user_name": null
       }
     },
     {
       "id": "1932844604:1932844604",
       "data": {
         "__scenes": {
-          "current": "liked",
+          "current": "search",
           "state": {}
         },
         "candidate": [
           {
-            "another_user_id": 368161810,
+            "another_user_id": 516254942,
+            "checked": false,
             "tele_id": 1932844604
           }
         ],
