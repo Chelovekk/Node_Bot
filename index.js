@@ -7,7 +7,8 @@ const stage = require('./scenes/scenes')
 const db = require('./db')
 // const geoRev = require('geo-reverse')
 
-
+require("dotenv").config();
+console.log(process.env.PORT)
 
 const bot = new Telegraf("1913645556:AAFK_KneC3NBz6S823yrZRQGdwuxe8uUDtc") 
 const tgram = new Telegram('1913645556:AAFK_KneC3NBz6S823yrZRQGdwuxe8uUDtc')
